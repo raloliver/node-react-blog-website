@@ -21,7 +21,7 @@ app.post('/api/posts/:name/like', (req, res) => {
     const post = req.params.name;
 
     fakePosts[post].like += 1;
-    res.status(200).send(`${post} now has ${fakePosts[post].like} like(s)`)
+    res.status(200).send(`${post} now has ${fakePosts[post].like} like(s)!`)
 });
 
 app.get('/', (req, res) => res.send('Hello'));
