@@ -4,7 +4,7 @@
   "description": "- https://aws.amazon.com/free/",
   "main": "index.js",
   "scripts": {
-    "start": "npx babel-node src/server.js",
+    "start": "npx nodemon --exec npx babel-node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
