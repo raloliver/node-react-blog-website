@@ -2,6 +2,7 @@
 
 - https://aws.amazon.com/free/
 
-### Babel
+### Dependencies
 
-- It is import to use those packages because we use ES2015+ sintax on our code.
+- It is important to use @babel packages because we use ES2015+ sintax on our code.
+- Also, it is important to use body-parser to handle with post action.
