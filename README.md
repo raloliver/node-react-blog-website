@@ -16,3 +16,22 @@
 - Can push data to database without worrying about format (accepts any JSON object)
 - Strucuture of data does not have be defined in advance
 - SQL not required
+
+> Start mongo: `mongod`
+
+> Access mongo: `mongo`
+
+> Create database: `use my-database`
+
+> Add data: `db.posts.insert([{...}])`
+
+> Consult data: `db.posts.find({})`
+
+> Consult data (formated): `db.posts.find({}).pretty()`
+
+> Search data: `db.posts.find({name: 'post-name'}).pretty()`
+
+> Search data (only one result): `db.posts.findOne({name: 'post-name'}).pretty()`
+
+
+
