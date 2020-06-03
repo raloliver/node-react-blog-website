@@ -8,6 +8,7 @@
 - Also, it is important to use body-parser to handle with post action. `express().use(bodyParser.json())` and to get a value, just use `app.post('/', (req, res) => res.send(`${req.body.name}!`))`
 - To get value from params, use `express.get('/:value', (req, res) => res.send(`${req.params.vale}!`))` when you need to pass by url.
 - Use `nodemon` if you dont restart server every time you made a change.
+- Use `mongodb` to handle with database and use `MongoClient` to connect.
 
 
 ### Why MongoDB?
@@ -32,6 +33,8 @@
 > Search data: `db.posts.find({name: 'post-name'}).pretty()`
 
 > Search data (only one result): `db.posts.findOne({name: 'post-name'}).pretty()`
+
+- When you want to update some info on db, use `updateOne` with `$set` as first property of second argument.
 
 
 
