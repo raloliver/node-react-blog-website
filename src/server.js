@@ -78,9 +78,6 @@ app.post('/api/posts/:name/comment', (req, res) => {
         },
         res
     );
-
-    // fakePosts[post].comments.unshift({ username, comment });
-    // res.status(200).send(fakePosts[post]);
 });
 
 app.get('/', (req, res) => res.send('Hello'));
