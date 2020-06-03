@@ -6,20 +6,26 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.get('/api/posts/:name', async (req, res) => {
+const connectDB = async (operations) => {
     try {
-        const post = req.params.name;
-
         const connect = await MongoClient.connect('mongodb://localhost:27017', { useNewUrlParser: true });
         const db = connect.db('node-react-blog-website');
 
-        const currentPost = await db.collection('posts').findOne({ name: post });
-        res.status(200).send(currentPost);
+        await operations(db);
 
         connect.close();
     } catch (error) {
-        res.status(500).send({ message: 'Error to get post', error });
+        res.status(500).send({ message: 'Error connection to database', error });
     }
+};
+
+app.get('/api/posts/:name', async (req, res) => {
+    connectDB(async (db) => {
+        const post = req.params.name;
+
+        const currentPost = await db.collection('posts').findOne({ name: post });
+        res.status(200).json(currentPost);
+    });
 });
 
 app.post('/api/posts/:name/like', async (req, res) => {
