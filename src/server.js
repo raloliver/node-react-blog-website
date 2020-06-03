@@ -6,6 +6,10 @@ const app = express();
 
 app.use(bodyParser.json());
 
+/**
+ * #TODO investigate and understanding better the connectDB function. How exactly the connectDB function works?
+ */
+
 const connectDB = async (operations) => {
     try {
         const connect = await MongoClient.connect('mongodb://localhost:27017', { useNewUrlParser: true });
@@ -20,12 +24,14 @@ const connectDB = async (operations) => {
 };
 
 app.get('/api/posts/:name', async (req, res) => {
-    connectDB(async (db) => {
-        const post = req.params.name;
+    connectDB(
+        async (db) => {
+            const post = req.params.name;
 
-        const currentPost = await db.collection('posts').findOne({ name: post });
-        res.status(200).json(currentPost);
-    });
+            const currentPost = await db.collection('posts').findOne({ name: post });
+            res.status(200).json(currentPost);
+        }
+    );
 });
 
 app.post('/api/posts/:name/like', async (req, res) => {
