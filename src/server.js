@@ -6,53 +6,78 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.get('/api/posts/:name', async (req, res) => {
-    try {
-        const post = req.params.name;
+/**
+ * #TODO investigate and understanding better the connectDB function. How exactly the connectDB function works?
+ */
 
+const connectDB = async (operations, res) => {
+    try {
         const connect = await MongoClient.connect('mongodb://localhost:27017', { useNewUrlParser: true });
         const db = connect.db('node-react-blog-website');
 
-        const currentPost = await db.collection('posts').findOne({ name: post });
-        res.status(200).send(currentPost);
+        await operations(db);
 
         connect.close();
     } catch (error) {
-        res.status(500).send({ message: 'Error to get post', error });
+        res.status(500).send({ message: 'Error connection to database', error });
     }
+};
+
+app.get('/api/posts/:name', async (req, res) => {
+    connectDB(
+        async (db) => {
+            const post = req.params.name;
+
+            const currentPost = await db.collection('posts').findOne({ name: post });
+            res.status(200).json(currentPost);
+        },
+        res
+    );
 });
 
 app.post('/api/posts/:name/like', async (req, res) => {
-    try {
-        const post = req.params.name;
+    connectDB(
+        async (db) => {
+            const post = req.params.name;
 
-        const connect = await MongoClient.connect('mongodb://localhost:27017', { useNewUrlParser: true });
-        const db = connect.db('node-react-blog-website');
+            const currentPost = await db.collection('posts').findOne({ name: post });
 
-        const currentPost = await db.collection('posts').findOne({ name: post });
+            await db.collection('posts').updateOne({ name: post }, {
+                '$set': {
+                    likes: currentPost.likes + 1
+                }
+            });
 
-        await db.collection('posts').updateOne({ name: post }, {
-            '$set': {
-                likes: currentPost.likes + 1
-            }
-        });
+            const updateCurrentPost = await db.collection('posts').findOne({ name: post });
 
-        const updateCurrentPost = await db.collection('posts').findOne({ name: post });
-
-        res.status(200).send(`${updateCurrentPost.name} now has ${updateCurrentPost.likes} like(s)!`);
-
-        connect.close();
-    } catch (error) {
-        res.status(500).send({ message: 'Error to like post', error });
-    }
+            res.status(200).send(`${updateCurrentPost.name} now has ${updateCurrentPost.likes} like(s)!`);
+        },
+        res
+    );
 });
 
 app.post('/api/posts/:name/comment', (req, res) => {
     const { username, comment } = req.body;
     const post = req.params.name;
 
-    fakePosts[post].comments.unshift({ username, comment });
-    res.status(200).send(fakePosts[post]);
+    connectDB(
+        async (db) => {
+            const post = req.params.name;
+
+            const currentPost = await db.collection('posts').findOne({ name: post });
+
+            await db.collection('posts').updateOne({ name: post }, {
+                '$set': {
+                    comments: [{ username, comment }].concat(currentPost.comments)
+                }
+            });
+
+            const updateCurrentPost = await db.collection('posts').findOne({ name: post });
+
+            res.status(200).send(`Comment '${updateCurrentPost.comments[0].comment}' writed by ${updateCurrentPost.comments[0].username} it is sent.`);
+        },
+        res
+    );
 });
 
 app.get('/', (req, res) => res.send('Hello'));
