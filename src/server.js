@@ -49,8 +49,9 @@ app.post('/api/posts/:name/like', async (req, res) => {
             });
 
             const updateCurrentPost = await db.collection('posts').findOne({ name: post });
-
-            res.status(200).send(`${updateCurrentPost.name} now has ${updateCurrentPost.likes} like(s)!`);
+            //#TODO: implements result pattern
+            //`${updateCurrentPost.name} now has ${updateCurrentPost.likes} like(s)!` }
+            res.status(200).json(updateCurrentPost);
         },
         res
     );
@@ -74,7 +75,9 @@ app.post('/api/posts/:name/comment', (req, res) => {
 
             const updateCurrentPost = await db.collection('posts').findOne({ name: post });
 
-            res.status(200).send(`Comment '${updateCurrentPost.comments[0].comment}' writed by ${updateCurrentPost.comments[0].username} it is sent.`);
+            //#TODO: implements result pattern
+            //`Comment '${updateCurrentPost.comments[0].comment}' writed by ${updateCurrentPost.comments[0].username} it is sent.`
+            res.status(200).send(updateCurrentPost);
         },
         res
     );
