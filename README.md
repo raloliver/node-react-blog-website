@@ -2,6 +2,14 @@
 
 - https://aws.amazon.com/free/
 
+### Upload project to Azure
+
+- `npm install -g forever`
+- `forever start -c "npm start"`
+- `forever list`
+
+> TODO: see how to deploy this project on Azure.
+
 ### Dependencies
 
 - It is important to use @babel packages because we use ES2015+ sintax on our code.
