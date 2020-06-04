@@ -59,7 +59,6 @@ app.post('/api/posts/:name/like', async (req, res) => {
 
 app.post('/api/posts/:name/comment', (req, res) => {
     const { username, comment } = req.body;
-    const post = req.params.name;
 
     connectDB(
         async (db) => {
