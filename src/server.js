@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 
 const connectDB = async (operations, res) => {
     try {
-        const connect = await MongoClient.connect('mongodb://localhost:27017', { useNewUrlParser: true });
+        const connect = await MongoClient.connect('mongodb://localhost:27017', { useNewUrlParser: true, useUnifiedTopology: true });
         const db = connect.db('node-react-blog-website');
 
         await operations(db);
